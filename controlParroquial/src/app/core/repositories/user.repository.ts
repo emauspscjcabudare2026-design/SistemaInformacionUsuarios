@@ -1,0 +1,43 @@
+// src/app/core/repositories/user.repository.ts
+
+import { Injectable } from '@angular/core';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
+
+import { firebaseDb } from '../../configurations/firebase.config';
+import { AppUser } from '../models/app-user.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserRepository {
+  private readonly collectionName = 'users';
+
+  async findByUid(uid: string): Promise<AppUser | null> {
+    const ref = doc(firebaseDb, this.collectionName, uid);
+    const snapshot = await getDoc(ref);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    return snapshot.data() as AppUser;
+  }
+
+  async createOrUpdate(user: AppUser): Promise<void> {
+    const ref = doc(firebaseDb, this.collectionName, user.uid);
+
+    await setDoc(
+      ref,
+      {
+        ...user,
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true },
+    );
+  }
+}
