@@ -26,14 +26,21 @@ import { AuthService } from '../../core/auth/services/auth.service';
           </div>
 
           <nav class="flex items-center gap-3">
-            @if (authService.appUser()?.role === 'admin') {
-              <a
-                routerLink="/admin"
-                class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
-              >
-                Admin
-              </a>
-            }
+          @if (authService.appUser()?.role === 'admin') {
+            <a
+            routerLink="/admin"
+            class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+            >
+            Admin
+            </a>
+
+            <a
+            routerLink="/admin/users"
+            class="rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+            >
+            Usuarios
+            </a>
+          }
 
             @if (authService.appUser()?.role === 'coordinator') {
               <a

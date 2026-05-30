@@ -25,6 +25,13 @@ export const routes: Routes = [
         ),
       },
       {
+        path: 'admin/users',
+        canActivate: [roleGuard(['admin'])],
+        loadComponent: () =>
+        import('./features/admin/pages/users.page').then((m) => m.UsersPage),
+      },
+
+      {
         path: 'coordinator',
         canActivate: [authGuard, roleGuard(['coordinator'])],
         loadComponent: () =>
@@ -32,6 +39,7 @@ export const routes: Routes = [
           (m) => m.CoordinatorDashboardPage,
         ),
       },
+
       {
         path: 'observer',
         canActivate: [authGuard, roleGuard(['observer'])],
@@ -40,6 +48,7 @@ export const routes: Routes = [
           (m) => m.ObserverDashboardPage,
         ),
       },
+
     ],
   },
   {

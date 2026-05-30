@@ -2,10 +2,13 @@
 
 import { Injectable } from '@angular/core';
 import {
+  collection,
+  deleteDoc,
   doc,
   getDoc,
-  setDoc,
+  getDocs,
   serverTimestamp,
+  setDoc,
 } from 'firebase/firestore';
 
 import { firebaseDb } from '../../configurations/firebase.config';
@@ -28,6 +31,15 @@ export class UserRepository {
     return snapshot.data() as AppUser;
   }
 
+  async findAll(): Promise<AppUser[]> {
+    const ref = collection(firebaseDb, this.collectionName);
+    const snapshot = await getDocs(ref);
+
+    return snapshot.docs.map((docSnapshot) => {
+      return docSnapshot.data() as AppUser;
+    });
+  }
+
   async createOrUpdate(user: AppUser): Promise<void> {
     const ref = doc(firebaseDb, this.collectionName, user.uid);
 
@@ -39,5 +51,10 @@ export class UserRepository {
       },
       { merge: true },
     );
+  }
+
+  async delete(uid: string): Promise<void> {
+    const ref = doc(firebaseDb, this.collectionName, uid);
+    await deleteDoc(ref);
   }
 }

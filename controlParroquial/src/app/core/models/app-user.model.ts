@@ -8,6 +8,6 @@ export interface AppUser {
   displayName?: string;
   role: Role;
   active: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 }
